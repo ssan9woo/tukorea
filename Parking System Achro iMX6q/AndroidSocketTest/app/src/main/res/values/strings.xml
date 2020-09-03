@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">AndroidSocketTest</string>
+    <string name="sendButton">송신</string>
+
+    <string name="menu1">📱라즈베리 접속</string>
+    <string name="ipWriteText">😆IP : </string>
+    <string name="send">Connect</string>
+
+
+    <string name="menu2">🚙주차 확인</string>
+    <string name="carNumWrite">😗4자리 입력 : </string>
+    <string name="sendCarNum">주차 확인</string>
+
+
+    <string name="menu3">💰요금 조회</string>
+    <string name="carNumWrite2">😛4자리 입력 : </string>
+    <string name="sendCarNum2">요금 조회</string>
+</resources>
