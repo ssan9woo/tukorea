@@ -1,0 +1,63 @@
+import xlwings as xw
+import os
+os.environ["GOOGLE_API_KEY"] = "AIzaSyCfJkU1gZiOYQiN2Yvim73WQrrgixmcWSA"
+import geocoder
+import time
+import pandas as pd
+import numpy as np
+from sklearn.cluster import KMeans
+import matplotlib.pyplot as plt
+import seaborn as sns
+from collections import defaultdict
+from heapq import *
+from haversine import haversine
+import openpyxl
+
+
+excel = xw.Book('address.xlsx')             #100개의 학생주소를 받아온다.
+sht = excel.sheets['Sheet1']                
+py_list = sht.range('B2:B101').value        
+df = pd.DataFrame(columns = ('x','y'))
+
+i = 0
+rowCount = 1
+z = []
+for address in py_list :                    #google_geocoder을 사용해 100개의 한글주소를 위도경도로 변환 한 후 list에 넣는다
+    g = geocoder.google(address)
+    if g.status == "OVER_QUERY_LIMIT":
+        while True:
+            print("Fail ===> Try Again")
+            time.sleep(0.5)
+            g = geocoder.google(address)
+            if g.status == "OK":
+                break
+    geo = g.latlng
+    df.loc[i] = geo                                     #변환시킨 x,y값[geo]을 Dataframe에 넣는다.
+    i += 1
+    z.append(geo)
+    print("loading...",i)
+print("complete!!!--------------------------------")    
+
+data_points = df.values
+geosch = geocoder.google("경기도 시흥시 정왕동 2121")    #학교의 좌표도 위도경도로 변환
+school = geosch.latlng
+Kmeans = KMeans(n_clusters=12).fit(data_points)          # K-평균 알고리즘으로 학생 100명의 분포도에 맞게 12개의 노드를 생성
+df['cluster_id'] = Kmeans.labels_
+centers = Kmeans.cluster_centers_                        
+centers = centers.tolist()      
+centers.sort(key = lambda x : x[0])                     
+centers.append(school)#--------------------------------> 12개의 정류장을 만들고 정류장 좌표를 sort시켜 고정좌표로 만든다.
+
+centers = z + centers                                    #100개의 위,경도 값과 정류장의 위,경도 좌표를 연속으로 붙힌다.
+excel.close()                                            #(코드길이를 줄이기 위함)
+
+
+excel2 = openpyxl.load_workbook('address.xlsx')
+sheet2 = excel2.create_sheet('Cordinates')
+for i in range(len(centers)):                            #구한 100 + 13개의 좌표를 또다른 엑셀로 넣기 위한 작업
+    sheet2.cell(row=i+2,column=1).value = i              #다른 엑셀에 넣지 않고 두 코드를 합쳐서 컴파일한다면 k평균에 의한
+    sheet2.cell(row=i+2,column=2).value = centers[i][0]  #정류장 좌표가 계속 달라지기 때문에 같은 주소여도 노선이 컴파일 
+    sheet2.cell(row=i+2,column=3).value = centers[i][1]  #할 떄마다 바뀌게 된다. 그것을 방지하기 위해 코드를 2개로 분산.
+    #[초기 주소에 대한 정보를 엑셀의 다른 Sheet로 넣는코드 + 그 엑셀에 Data를 가져와서 노선을 생성하는 코드]
+excel2.save('address.xlsx')                              #Data를 넣은 후 엑셀파일을 저장한다.
+excel2.close()
