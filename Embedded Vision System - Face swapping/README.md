@@ -1,5 +1,5 @@
 # Face_swapping using opencv and python
-
+[[Python 코드보기]](https://github.com/sangwoo24/Main-Project-in-KPU/blob/master/Embedded%20Vision%20System%20-%20Face%20swapping/realtime_face_swapping.py)
 
 Opencv와 파이썬을 이용한 얼굴 바꾸기 프로그램입니다.
 
