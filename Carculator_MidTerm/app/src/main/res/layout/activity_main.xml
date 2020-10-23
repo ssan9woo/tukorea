@@ -17,6 +17,7 @@
         app:rowCount="7">
 
         <Button
+            android:onClick="percentage"
             android:id="@+id/perBtn"
             android:layout_width="wrap_content"
             android:layout_height="60dp"
@@ -27,6 +28,7 @@
             app:layout_row="0" />
 
         <Button
+            android:onClick="root"
             android:id="@+id/rootBtn"
             android:layout_width="wrap_content"
             android:layout_height="60dp"
@@ -37,6 +39,7 @@
 
 
         <Button
+            android:onClick="power"
             android:id="@+id/PowBtn"
             android:layout_width="wrap_content"
             android:layout_height="60dp"
@@ -46,12 +49,12 @@
             app:layout_row="0" />
 
         <Button
+            android:onClick="reciprocal"
             android:id="@+id/reciBtn"
             android:layout_width="wrap_content"
             android:layout_height="60dp"
             android:layout_margin="5dp"
             android:text="1/X"
-
             app:layout_column="3"
             app:layout_row="0" />
 
@@ -62,73 +65,73 @@
             android:layout_margin="5dp"
             android:layout_marginLeft="14dp"
             android:text="CE"
-
             app:layout_column="0"
             app:layout_row="1" />
 
         <Button
+            android:onClick="clearAll"
             android:id="@+id/cBtn"
             android:layout_width="wrap_content"
             android:layout_height="60dp"
             android:layout_margin="5dp"
-
             android:text="C"
             app:layout_column="1"
             app:layout_row="1" />
 
         <Button
+            android:onClick="deleteNum"
             android:id="@+id/delBtn"
             android:layout_width="wrap_content"
             android:layout_height="60dp"
             android:layout_margin="5dp"
-
             android:text="DEL"
             android:textSize="14sp"
             app:layout_column="2"
             app:layout_row="1" />
 
         <Button
+            android:onClick="calculateNum"
             android:id="@+id/divBtn"
             android:layout_width="wrap_content"
             android:layout_height="60dp"
             android:layout_margin="5dp"
             android:text="÷"
-
             app:layout_column="3"
             app:layout_row="1" />
 
         <Button
+            android:onClick="inputNumber"
             android:id="@+id/btn7"
             android:layout_width="wrap_content"
             android:layout_height="60dp"
             android:layout_margin="5dp"
             android:layout_marginLeft="14dp"
             android:text="7"
-
             app:layout_column="0"
             app:layout_row="2" />
 
         <Button
+            android:onClick="inputNumber"
             android:id="@+id/btn8"
             android:layout_width="wrap_content"
             android:layout_height="60dp"
             android:layout_margin="5dp"
             android:text="8"
-
             app:layout_column="1"
             app:layout_row="2" />
 
         <Button
+            android:onClick="inputNumber"
             android:id="@+id/btn9"
             android:layout_width="wrap_content"
             android:layout_height="60dp"
             android:layout_margin="5dp"
             android:text="9"
-
             app:layout_column="2"
             app:layout_row="2" />
 
         <Button
+            android:onClick="calculateNum"
             android:id="@+id/mulBtn"
             android:layout_width="wrap_content"
             android:layout_height="60dp"
@@ -138,37 +141,38 @@
             app:layout_row="2" />
 
         <Button
+            android:onClick="inputNumber"
             android:id="@+id/btn4"
             android:layout_width="wrap_content"
             android:layout_height="60dp"
             android:layout_margin="5dp"
             android:layout_marginLeft="14dp"
             android:text="4"
-
             app:layout_column="0"
             app:layout_row="3" />
 
         <Button
+            android:onClick="inputNumber"
             android:id="@+id/btn5"
             android:layout_width="wrap_content"
             android:layout_height="60dp"
             android:layout_margin="5dp"
-
             android:text="5"
             app:layout_column="1"
             app:layout_row="3" />
 
         <Button
+            android:onClick="inputNumber"
             android:id="@+id/btn6"
             android:layout_width="wrap_content"
             android:layout_height="60dp"
             android:layout_margin="5dp"
             android:text="6"
-
             app:layout_column="2"
             app:layout_row="3" />
 
         <Button
+            android:onClick="calculateNum"
             android:id="@+id/subBtn"
             android:layout_width="wrap_content"
             android:layout_height="60dp"
@@ -179,47 +183,48 @@
 
 
         <Button
+            android:onClick="inputNumber"
             android:id="@+id/btn1"
             android:layout_width="wrap_content"
             android:layout_height="60dp"
             android:layout_margin="5dp"
             android:layout_marginLeft="14dp"
-
             android:text="1"
             app:layout_column="0"
             app:layout_row="4" />
 
         <Button
+            android:onClick="inputNumber"
             android:id="@+id/btn2"
             android:layout_width="wrap_content"
             android:layout_height="60dp"
             android:layout_margin="5dp"
             android:text="2"
-
             app:layout_column="1"
             app:layout_row="4" />
 
         <Button
+            android:onClick="inputNumber"
             android:id="@+id/btn3"
             android:layout_width="wrap_content"
             android:layout_height="60dp"
             android:layout_margin="5dp"
             android:text="3"
             app:layout_column="2"
-
             app:layout_row="4" />
 
         <Button
+            android:onClick="calculateNum"
             android:id="@+id/addBtn"
             android:layout_width="wrap_content"
             android:layout_height="60dp"
             android:layout_margin="5dp"
-
             android:text="+"
             app:layout_column="3"
             app:layout_row="4" />
 
         <Button
+            android:onClick="convertToNegative"
             android:id="@+id/negativeBtn"
             android:layout_width="wrap_content"
             android:layout_height="60dp"
@@ -227,30 +232,30 @@
             android:layout_marginLeft="14dp"
             android:text="±"
             app:layout_column="0"
-
             app:layout_row="5" />
 
         <Button
+            android:onClick="inputNumber"
             android:id="@+id/btn0"
             android:layout_width="wrap_content"
             android:layout_height="60dp"
-
             android:layout_margin="5dp"
             android:text="0"
             app:layout_column="1"
             app:layout_row="5" />
 
         <Button
+            android:onClick="appendPoint"
             android:id="@+id/pointBtn"
             android:layout_width="wrap_content"
             android:layout_height="60dp"
             android:layout_margin="5dp"
             android:text="."
-
             app:layout_column="2"
             app:layout_row="5" />
 
         <Button
+            android:onClick="calculateNum"
             android:id="@+id/equalBtn"
             android:layout_width="wrap_content"
             android:layout_height="60dp"
@@ -336,3 +341,4 @@
     </androidx.gridlayout.widget.GridLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+
