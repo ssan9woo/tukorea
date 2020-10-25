@@ -18,7 +18,7 @@ public class MainActivity extends AppCompatActivity {
     Stack<Integer> operationStack;
     double previousResult, currentResult;
     Calculation calculation;
-    double memoryValue;
+    Stack<Double> memoryValue;
 
 
     @Override
@@ -29,7 +29,9 @@ public class MainActivity extends AppCompatActivity {
         memoryViewText = findViewById(R.id.memoryViewText);
         operationStack = new Stack<>();
         calculation = new Calculation();
+        memoryValue = new Stack<>();
     }
+
     // 연산자 연산 수행
     public void calculateNum(View v){
         int op = v.getId();
@@ -136,29 +138,31 @@ public class MainActivity extends AppCompatActivity {
 
     // Memory Clear
     public void clearMemory(View v){
-        memoryValue = 0;
+        // 메모리에 있는 모든 Data clear
+        for(int i = 0 ; i < memoryValue.size(); i++){
+            memoryValue.set(i, 0.0);
+        }
     }
 
     // Memory Read
     public void readMemory(View v){
-        result.setText(roundNum(memoryValue));
+        // MemoryValue의 Top값 return
+        result.setText(roundNum(memoryValue.get(0)));
     }
 
     // M+
     public void add_Memory(View v){
-        double add = memoryValue + Double.parseDouble(result.getText().toString());
-        result.setText(roundNum(add));
+        memoryValue.set(0, memoryValue.get(0) + Double.parseDouble(result.getText().toString())) ;
     }
 
     // M-
     public void sub_Memory(View v){
-        double sub = memoryValue - Double.parseDouble(result.getText().toString());
-        result.setText(roundNum(sub));
+        memoryValue.set(0,+ memoryValue.get(0) - Double.parseDouble(result.getText().toString())) ;
     }
 
     // Memory Set
     public void setMemory(View v){
-        memoryValue = Double.parseDouble(result.getText().toString());
+        memoryValue.add(Double.parseDouble(result.getText().toString()));
     }
 
     // Memory View
