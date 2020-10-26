@@ -4,9 +4,12 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -18,18 +21,22 @@ public class MainActivity extends AppCompatActivity {
     Stack<Integer> operationStack;
     double previousResult, currentResult;
     Calculation calculation;
-    Stack<Double> memoryValue;
-
+    static Stack<Double> memoryValue;
+    final static int MEMORY_SIZE = 5;
+    public static Context mContext;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+
         result = findViewById(R.id.result);
         memoryViewText = findViewById(R.id.memoryViewText);
         operationStack = new Stack<>();
         calculation = new Calculation();
         memoryValue = new Stack<>();
+        mContext = this;
     }
 
     // 연산자 연산 수행
@@ -139,9 +146,7 @@ public class MainActivity extends AppCompatActivity {
     // Memory Clear
     public void clearMemory(View v){
         // 메모리에 있는 모든 Data clear
-        for(int i = 0 ; i < memoryValue.size(); i++){
-            memoryValue.set(i, 0.0);
-        }
+        memoryValue.removeAllElements();
     }
 
     // Memory Read
@@ -162,13 +167,15 @@ public class MainActivity extends AppCompatActivity {
 
     // Memory Set
     public void setMemory(View v){
-        memoryValue.add(Double.parseDouble(result.getText().toString()));
+        if (memoryValue.size() < MEMORY_SIZE)
+            memoryValue.add(Double.parseDouble(result.getText().toString()));
     }
 
     // Memory View
     @SuppressLint("SetTextI18n")
     public void viewMemory(View v){
-        memoryViewText.setText("Memory Value : " + String.valueOf(roundNum(memoryValue)));
+        CustomDialog customDialog = new CustomDialog(this);
+        customDialog.show();
     }
 
     // Clear Memory View Text
@@ -176,12 +183,16 @@ public class MainActivity extends AppCompatActivity {
         memoryViewText.setText("");
     }
 
-    public String roundNum(double num){
+    public static String roundNum(double num){
         if(String.valueOf(num - (int)num).equals("0.0")){
             return String.valueOf(Math.round(num));
         }else{
             return String.valueOf(Math.round(num*1000)/1000.0);
         }
+    }
+
+    public String getCurrentResultValue(){
+        return result.getText().toString();
     }
 }
 
