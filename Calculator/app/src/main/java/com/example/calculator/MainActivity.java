@@ -24,6 +24,7 @@ public class MainActivity extends AppCompatActivity {
     static Stack<Double> memoryValue;
     final static int MEMORY_SIZE = 5;
     public static Context mContext;
+    boolean flag = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,7 +33,6 @@ public class MainActivity extends AppCompatActivity {
 
 
         result = findViewById(R.id.result);
-        memoryViewText = findViewById(R.id.memoryViewText);
         operationStack = new Stack<>();
         calculation = new Calculation();
         memoryValue = new Stack<>();
@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
             if(op != R.id.equalBtn){
                 operationStack.add(op);
                 previousResult = Double.parseDouble(result.getText().toString());
-                result.setText("0");
+                //result.setText("0");
             }
         } else{
             int willCalculateOperation = operationStack.pop();
@@ -71,13 +71,28 @@ public class MainActivity extends AppCompatActivity {
             result.setText(roundNum(currentResult));
             previousResult = currentResult;
             currentResult = 0;
+            flag = false;
         }
     }
 
     // inputNumber
     @SuppressLint("ResourceType")
     public void inputNumber(View v){
-        String calculationValue = result.getText().toString();
+        String calculationValue = "";
+        System.out.println(operationStack + " "  + flag);
+
+        if (operationStack.size() > 0) {
+            if(!flag){
+                flag = true;
+                calculationValue = "";
+            }else{
+                calculationValue = result.getText().toString();
+            }
+        }else{
+            calculationValue = result.getText().toString();
+            flag = false;
+        }
+
         if (calculationValue.length() > 10)
             return;
 
@@ -103,8 +118,12 @@ public class MainActivity extends AppCompatActivity {
 
     // ±
     public void convertToNegative(View v){
-        double num = Double.parseDouble(result.getText().toString()) * -1;
-        result.setText(roundNum(num));
+        if(!result.getText().toString().equals("0")){
+            double num = Double.parseDouble(result.getText().toString()) * -1;
+            result.setText(roundNum(num));
+        }else{
+            result.setText("0");
+        }
     }
 
     // .
