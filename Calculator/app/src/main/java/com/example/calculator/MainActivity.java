@@ -24,8 +24,9 @@ public class MainActivity extends AppCompatActivity {
     static Stack<Double> memoryValue;
     final static int MEMORY_SIZE = 5;
     public static Context mContext;
-    boolean flag = false;
+    boolean flag = false, calculateFlag = false;
     static Stack<Double> history;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,47 +45,48 @@ public class MainActivity extends AppCompatActivity {
     // 연산자 연산 수행
     public void calculateNum(View v){
         int op = v.getId();
+        if(calculateFlag) {
+            if (operationStack.isEmpty()) {
+                if (op != R.id.equalBtn) {
+                    operationStack.add(op);
+                    previousResult = Double.parseDouble(result.getText().toString());
+                } else {
+                    if (history.size() < MEMORY_SIZE)
+                        history.add(Double.parseDouble(result.getText().toString()));
+                    System.out.println("history : " + history);
+                }
+            } else {
+                int willCalculateOperation = operationStack.pop();
 
-        if(operationStack.isEmpty()){
-            if(op != R.id.equalBtn){
-                operationStack.add(op);
-                previousResult = Double.parseDouble(result.getText().toString());
-            }
-            else{
-                if(history.size() < MEMORY_SIZE)
-                    history.add(Double.parseDouble(result.getText().toString()));
-                System.out.println("history : " + history);
-            }
-        } else{
-            int willCalculateOperation = operationStack.pop();
+                switch (willCalculateOperation) {
+                    case R.id.addBtn:
+                        currentResult = calculation.add(previousResult, Double.parseDouble(result.getText().toString()));
+                        break;
+                    case R.id.subBtn:
+                        currentResult = calculation.sub(previousResult, Double.parseDouble(result.getText().toString()));
+                        break;
+                    case R.id.mulBtn:
+                        currentResult = calculation.mul(previousResult, Double.parseDouble(result.getText().toString()));
+                        break;
+                    case R.id.divBtn:
+                        currentResult = calculation.div(previousResult, Double.parseDouble(result.getText().toString()));
+                        break;
+                }
+                result.setText(roundNum(currentResult));
+                previousResult = currentResult;
+                currentResult = 0;
+                flag = false;
 
-            switch (willCalculateOperation){
-                case R.id.addBtn:
-                    currentResult = calculation.add(previousResult, Double.parseDouble(result.getText().toString()));
-                    break;
-                case R.id.subBtn:
-                    currentResult = calculation.sub(previousResult, Double.parseDouble(result.getText().toString()));
-                    break;
-                case R.id.mulBtn:
-                    currentResult = calculation.mul(previousResult, Double.parseDouble(result.getText().toString()));
-                    break;
-                case R.id.divBtn:
-                    currentResult = calculation.div(previousResult, Double.parseDouble(result.getText().toString()));
-                    break;
-            }
-            result.setText(roundNum(currentResult));
-            previousResult = currentResult;
-            currentResult = 0;
-            flag = false;
-
-            if (op != R.id.equalBtn)
-                operationStack.add(op);
-            else{
-                if(history.size() < MEMORY_SIZE)
-                    history.add(Double.parseDouble(result.getText().toString()));
-                System.out.println("history : " + history);
+                if (op != R.id.equalBtn)
+                    operationStack.add(op);
+                else {
+                    if (history.size() < MEMORY_SIZE)
+                        history.add(Double.parseDouble(result.getText().toString()));
+                    System.out.println("history : " + history);
+                }
             }
         }
+        calculateFlag = false;
     }
 
     // inputNumber
@@ -117,6 +119,7 @@ public class MainActivity extends AppCompatActivity {
         Button num = findViewById(v.getId());
         calculationValue += num.getText();
         result.setText(calculationValue);
+        calculateFlag = true;
     }
 
     // C
@@ -180,6 +183,7 @@ public class MainActivity extends AppCompatActivity {
 
     // power
     public void power(View v){
+
         result.setText(String.valueOf(roundNum(Math.pow(Double.parseDouble(result.getText().toString()),2))));
         flag = true;
     }
@@ -194,19 +198,22 @@ public class MainActivity extends AppCompatActivity {
     // Memory Read
     public void readMemory(View v){
         // MemoryValue의 Top값 return
-        result.setText(roundNum(memoryValue.get(0)));
+        if(memoryValue.size() != 0)
+            result.setText(roundNum(memoryValue.get(0)));
         flag = true;
     }
 
     // M+
     public void add_Memory(View v){
-        memoryValue.set(0, memoryValue.get(0) + Double.parseDouble(result.getText().toString())) ;
+        if(memoryValue.size() != 0)
+            memoryValue.set(0, memoryValue.get(0) + Double.parseDouble(result.getText().toString())) ;
         flag = true;
     }
 
     // M-
     public void sub_Memory(View v){
-        memoryValue.set(0,+ memoryValue.get(0) - Double.parseDouble(result.getText().toString()));
+        if(memoryValue.size() != 0)
+            memoryValue.set(0,+ memoryValue.get(0) - Double.parseDouble(result.getText().toString()));
         flag = true;
     }
 
