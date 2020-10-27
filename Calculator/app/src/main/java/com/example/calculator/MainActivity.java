@@ -25,6 +25,7 @@ public class MainActivity extends AppCompatActivity {
     final static int MEMORY_SIZE = 5;
     public static Context mContext;
     boolean flag = false;
+    static Stack<Double> history;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
         operationStack = new Stack<>();
         calculation = new Calculation();
         memoryValue = new Stack<>();
+        history = new Stack<>();
         mContext = this;
     }
 
@@ -47,12 +49,14 @@ public class MainActivity extends AppCompatActivity {
             if(op != R.id.equalBtn){
                 operationStack.add(op);
                 previousResult = Double.parseDouble(result.getText().toString());
-                //result.setText("0");
+            }
+            else{
+                if(history.size() < MEMORY_SIZE)
+                    history.add(Double.parseDouble(result.getText().toString()));
+                System.out.println("history : " + history);
             }
         } else{
             int willCalculateOperation = operationStack.pop();
-            if (op != R.id.equalBtn)
-                operationStack.add(op);
 
             switch (willCalculateOperation){
                 case R.id.addBtn:
@@ -72,6 +76,14 @@ public class MainActivity extends AppCompatActivity {
             previousResult = currentResult;
             currentResult = 0;
             flag = false;
+
+            if (op != R.id.equalBtn)
+                operationStack.add(op);
+            else{
+                if(history.size() < MEMORY_SIZE)
+                    history.add(Double.parseDouble(result.getText().toString()));
+                System.out.println("history : " + history);
+            }
         }
     }
 
@@ -89,7 +101,11 @@ public class MainActivity extends AppCompatActivity {
                 calculationValue = result.getText().toString();
             }
         }else{
-            calculationValue = result.getText().toString();
+            if(flag){
+                calculationValue = "";
+            }else{
+                calculationValue = result.getText().toString();
+            }
             flag = false;
         }
 
@@ -129,7 +145,8 @@ public class MainActivity extends AppCompatActivity {
     // .
     @SuppressLint("SetTextI18n")
     public void appendPoint(View v){
-        result.setText(result.getText() + ".");
+        if(!String.valueOf(result.getText().toString().charAt(result.getText().toString().length() - 1)).equals("."))
+            result.setText(result.getText() + ".");
     }
 
     // DEL
@@ -144,50 +161,60 @@ public class MainActivity extends AppCompatActivity {
 
     // root
     public void root(View v){
+        System.out.println(flag);
         result.setText(String.valueOf(roundNum(Math.sqrt(Double.parseDouble(result.getText().toString())))));
+        flag = true;
     }
 
     // percentage
     public void percentage(View v){
         result.setText(String.valueOf(roundNum(Double.parseDouble(result.getText().toString()) / 100.0)));
+        flag = true;
     }
 
     // reciprocal
     public void reciprocal(View v){
         result.setText(String.valueOf(roundNum(1 / Double.parseDouble(result.getText().toString()))));
+        flag = true;
     }
 
     // power
     public void power(View v){
         result.setText(String.valueOf(roundNum(Math.pow(Double.parseDouble(result.getText().toString()),2))));
+        flag = true;
     }
 
     // Memory Clear
     public void clearMemory(View v){
         // 메모리에 있는 모든 Data clear
         memoryValue.removeAllElements();
+        flag = true;
     }
 
     // Memory Read
     public void readMemory(View v){
         // MemoryValue의 Top값 return
         result.setText(roundNum(memoryValue.get(0)));
+        flag = true;
     }
 
     // M+
     public void add_Memory(View v){
         memoryValue.set(0, memoryValue.get(0) + Double.parseDouble(result.getText().toString())) ;
+        flag = true;
     }
 
     // M-
     public void sub_Memory(View v){
-        memoryValue.set(0,+ memoryValue.get(0) - Double.parseDouble(result.getText().toString())) ;
+        memoryValue.set(0,+ memoryValue.get(0) - Double.parseDouble(result.getText().toString()));
+        flag = true;
     }
 
     // Memory Set
     public void setMemory(View v){
         if (memoryValue.size() < MEMORY_SIZE)
             memoryValue.add(Double.parseDouble(result.getText().toString()));
+        flag = true;
     }
 
     // Memory View
@@ -195,11 +222,6 @@ public class MainActivity extends AppCompatActivity {
     public void viewMemory(View v){
         CustomDialog customDialog = new CustomDialog(this);
         customDialog.show();
-    }
-
-    // Clear Memory View Text
-    public void clearMemoryViewText(View v){
-        memoryViewText.setText("");
     }
 
     public static String roundNum(double num){
@@ -213,8 +235,15 @@ public class MainActivity extends AppCompatActivity {
     public String getCurrentResultValue(){
         return result.getText().toString();
     }
-}
 
+    public void viewHistory(View v){
+        History historyDialog = new History(this);
+        historyDialog.show();
+    }
+    public void zero(String value){
+        result.setText(value);
+    }
+}
 
 
 
