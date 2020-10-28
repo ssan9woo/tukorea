@@ -17,7 +17,7 @@ import java.util.Stack;
 
 public class MainActivity extends AppCompatActivity {
 
-    TextView result, memoryViewText;
+    TextView result;
     Stack<Integer> operationStack;
     double previousResult, currentResult;
     Calculation calculation;
@@ -86,7 +86,10 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         }
-        calculateFlag = false;
+        if(op != R.id.equalBtn)
+            calculateFlag = false;
+        else
+            calculateFlag = true;
     }
 
     // inputNumber
@@ -166,33 +169,38 @@ public class MainActivity extends AppCompatActivity {
     public void root(View v){
         System.out.println(flag);
         result.setText(String.valueOf(roundNum(Math.sqrt(Double.parseDouble(result.getText().toString())))));
-        flag = true;
+        flag = false;
+        calculateFlag = true;
     }
 
     // percentage
     public void percentage(View v){
         result.setText(String.valueOf(roundNum(Double.parseDouble(result.getText().toString()) / 100.0)));
-        flag = true;
+        flag = false;
+        calculateFlag = true;
     }
 
     // reciprocal
     public void reciprocal(View v){
         result.setText(String.valueOf(roundNum(1 / Double.parseDouble(result.getText().toString()))));
-        flag = true;
+        flag = false;
+        calculateFlag = true;
     }
 
     // power
     public void power(View v){
 
         result.setText(String.valueOf(roundNum(Math.pow(Double.parseDouble(result.getText().toString()),2))));
-        flag = true;
+        flag = false;
+        calculateFlag = true;
     }
 
     // Memory Clear
     public void clearMemory(View v){
         // 메모리에 있는 모든 Data clear
         memoryValue.removeAllElements();
-        flag = true;
+        flag = false;
+        calculateFlag = true;
     }
 
     // Memory Read
@@ -200,28 +208,32 @@ public class MainActivity extends AppCompatActivity {
         // MemoryValue의 Top값 return
         if(memoryValue.size() != 0)
             result.setText(roundNum(memoryValue.get(0)));
-        flag = true;
+        flag = false;
+        calculateFlag = true;
     }
 
     // M+
     public void add_Memory(View v){
         if(memoryValue.size() != 0)
             memoryValue.set(0, memoryValue.get(0) + Double.parseDouble(result.getText().toString())) ;
-        flag = true;
+        flag = false;
+        calculateFlag = true;
     }
 
     // M-
     public void sub_Memory(View v){
         if(memoryValue.size() != 0)
             memoryValue.set(0,+ memoryValue.get(0) - Double.parseDouble(result.getText().toString()));
-        flag = true;
+        flag = false;
+        calculateFlag = true;
     }
 
     // Memory Set
     public void setMemory(View v){
         if (memoryValue.size() < MEMORY_SIZE)
             memoryValue.add(Double.parseDouble(result.getText().toString()));
-        flag = true;
+        flag = false;
+        calculateFlag = true;
     }
 
     // Memory View
