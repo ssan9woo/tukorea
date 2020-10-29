@@ -42,7 +42,6 @@ class History extends Dialog {
         this.history = MainActivity.history;
         layoutInit();
         viewUpdate();
-
     }
 
     View.OnClickListener removeAllHistory = new View.OnClickListener() {

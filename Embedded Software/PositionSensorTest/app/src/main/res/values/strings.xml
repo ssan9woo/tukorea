@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Position Sensor Test</string>
+    <string name="sensor_ambient_pressure">압력</string>
+    <string name="sensor_illuminance">조도</string>
+</resources>
