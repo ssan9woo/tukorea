@@ -9,9 +9,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
-
 import java.util.Objects;
 import java.util.Stack;
 
@@ -96,6 +94,4 @@ class History extends Dialog {
         }
         return -1;
     }
-
-
 }
