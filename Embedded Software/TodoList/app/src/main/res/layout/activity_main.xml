@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="15dp"
+    android:background="@android:color/white">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/input"
+            android:layout_width="290dp"
+            android:layout_height="43dp"
+            android:layout_marginRight="15dp"
+            android:autofillHints="input"
+            android:background="@drawable/edit_text_shape"
+            android:cursorVisible="true"
+            android:hint="해야 할 일을 입력해주세요."
+            android:inputType="textNoSuggestions"
+            android:paddingLeft="15dp"></EditText>
+
+        <Button
+            android:id="@+id/createTodo"
+            android:layout_width="match_parent"
+            android:layout_height="43dp"
+            android:layout_gravity="clip_horizontal"
+            android:background="@drawable/button_shape"
+            android:fontFamily="@font/binggrae"
+            android:text="추가"></Button>
+    </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+</LinearLayout>
