@@ -132,7 +132,7 @@ public class MainActivity extends Activity {
                 holder.mIcon = (ImageView) convertView.findViewById(R.id.mImage);
                 holder.mText = (TextView) convertView.findViewById(R.id.mText);
                 holder.mDate = (TextView) convertView.findViewById(R.id.mDate);
-
+                System.out.println("A");
                 convertView.setTag(holder);
             }else{
                 holder = (ViewHolder) convertView.getTag();

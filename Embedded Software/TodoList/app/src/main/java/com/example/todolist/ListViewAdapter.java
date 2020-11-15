@@ -1,5 +1,6 @@
 package com.example.todolist;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
@@ -7,8 +8,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import java.util.ArrayList;
 
 public class ListViewAdapter extends BaseAdapter {
@@ -55,8 +59,9 @@ public class ListViewAdapter extends BaseAdapter {
         MainActivity.adapter.notifyDataSetChanged();
     }
 
+    @SuppressLint("InflateParams")
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
         ViewHolder holder;
         if (convertView == null) {
             holder = new ViewHolder();
@@ -68,16 +73,25 @@ public class ListViewAdapter extends BaseAdapter {
             holder.todo = (TextView) convertView.findViewById(R.id.todo);
             holder.isImportant = (CheckBox) convertView.findViewById(R.id.important);
 
+            holder.isFinished.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                    //
+                }
+            });
+            holder.isImportant.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                    //
+                }
+            });
+
             convertView.setTag(holder);
         }else{
             holder = (ViewHolder) convertView.getTag();
         }
-
         TodoList to = todoLists.get(position);
-
-        holder.isFinished.setChecked(to.isFinished);
         holder.todo.setText(to.todo);
-        holder.isImportant.setChecked(to.isImportant);
         return convertView;
     }
 }
