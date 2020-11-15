@@ -32,8 +32,6 @@ public class MainActivity extends AppCompatActivity {
         createTodo = findViewById(R.id.createTodo);
         input = findViewById(R.id.input);
 
-        TodoList todolist = new TodoList(false,"hello",false);
-        todoLists.add(todolist);
 
         //Adapter
         adapter = new CustomAdapter(this,R.layout.todo_list, todoLists);
@@ -49,19 +47,13 @@ public class MainActivity extends AppCompatActivity {
         System.loadLibrary("native-lib");
     }
 
-    public void inputTodo(View v){
-        String in = input.getText().toString();
-        if (!in.equals("")){
-            TodoList todolist = new TodoList(false,in,false);
-            todoLists.add(todolist);
-        }
-    }
+
 }
 
 
 
 class CustomAdapter extends ArrayAdapter<TodoList> {
-    public static ArrayList<TodoList> todoList;
+    private ArrayList<TodoList> todoList;
 
     public CustomAdapter(Context context, int textViewResourceId, ArrayList<TodoList> todoList){
         super(context, textViewResourceId, todoList);
@@ -113,14 +105,14 @@ class CustomAdapter extends ArrayAdapter<TodoList> {
         return convertView;
     }
 
-    public void addItem(String title, String content) {
-        TodoList item = new TodoList();
+    public void addItem(boolean isFinished, String todo, boolean isImportant){
+        TodoList list = new TodoList();
 
-        item.setTitle(title);
-        item.setContent(content);
+        list.setFinished(isFinished);
+        list.setTodo(todo);
+        list.setImportant(isImportant);
 
-        listViewItemList.add(item);
+        todoList.add(list);
     }
-
 }
 
