@@ -32,7 +32,7 @@
             android:background="@drawable/button_shape"
             android:fontFamily="@font/binggrae"
             android:onClick="inputTodo"
-            android:text="추가"></Button>
+            android:text="@string/createTodo"></Button>
     </LinearLayout>
 
     <ListView
