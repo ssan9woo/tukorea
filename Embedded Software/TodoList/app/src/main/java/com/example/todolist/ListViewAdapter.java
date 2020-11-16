@@ -39,13 +39,33 @@ public class ListViewAdapter extends BaseAdapter {
         return position;
     }
 
-    public void addItem(String s){
+    public void addItem(boolean isFinished, String s, boolean isImportant){
         TodoList todo = new TodoList();
-        todo.setFinished(false);
+        todo.setFinished(isFinished);
         todo.setTodo(s);
-        todo.setImportant(false);
+        todo.setImportant(isImportant);
 
         todoLists.add(todo);
+        dataChange();
+    }
+
+    public void addItem_top(boolean isFinished, String s, boolean isImportant){
+        TodoList todo = new TodoList();
+        todo.setFinished(isFinished);
+        todo.setTodo(s);
+        todo.setImportant(isImportant);
+
+        todoLists.add(0,todo);
+        dataChange();
+    }
+
+    public void resetItem(int position,boolean isFinished, String s, boolean isImportant){
+        TodoList t = new TodoList();
+        t.isImportant = isImportant;
+        t.todo = s;
+        t.isFinished = isFinished;
+
+        todoLists.set(position,t);
         dataChange();
     }
 
@@ -54,6 +74,10 @@ public class ListViewAdapter extends BaseAdapter {
         dataChange();
     }
 
+    public void removeAll(){
+        todoLists.removeAll(todoLists);
+        dataChange();
+    }
 
     public void dataChange(){
         MainActivity.adapter.notifyDataSetChanged();
@@ -62,7 +86,7 @@ public class ListViewAdapter extends BaseAdapter {
     @SuppressLint("InflateParams")
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
-        ViewHolder holder;
+        final ViewHolder holder;
         if (convertView == null) {
             holder = new ViewHolder();
 
@@ -73,25 +97,44 @@ public class ListViewAdapter extends BaseAdapter {
             holder.todo = (TextView) convertView.findViewById(R.id.todo);
             holder.isImportant = (CheckBox) convertView.findViewById(R.id.important);
 
-            holder.isFinished.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            holder.isFinished.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                    //
-                }
-            });
-            holder.isImportant.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                    //
+                public void onClick(View view) {
+                    System.out.println(holder.isFinished.isChecked());
+                    if(holder.isFinished.isChecked()) {
+                        //맨 밑으로 내려보냄
+                        addItem(holder.isFinished.isChecked(), holder.todo.getText().toString(), holder.isImportant.isChecked());
+                        remove(position);
+                        System.out.println("hhhh"+position);
+                    }else{
+                        //맨 위로 올려보냄
+                        remove(position);
+                        addItem_top(holder.isFinished.isChecked(), holder.todo.getText().toString(), holder.isImportant.isChecked());
+                    }
                 }
             });
 
+            holder.isImportant.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (!holder.isFinished.isChecked()) {
+                        if (holder.isImportant.isChecked()) {
+                            remove(position);
+                            addItem_top(holder.isFinished.isChecked(), holder.todo.getText().toString(), holder.isImportant.isChecked());
+                        } else {
+                            resetItem(position, holder.isFinished.isChecked(), holder.todo.getText().toString(), holder.isImportant.isChecked());
+                        }
+                    }
+                }
+            });
             convertView.setTag(holder);
         }else{
             holder = (ViewHolder) convertView.getTag();
         }
         TodoList to = todoLists.get(position);
         holder.todo.setText(to.todo);
+        holder.isFinished.setChecked(to.isFinished);
+        holder.isImportant.setChecked(to.isImportant);
         return convertView;
     }
 }

@@ -23,10 +23,9 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
     @SuppressLint("StaticFieldLeak")
     static ListViewAdapter adapter = null;
-    private TodoList todoList = null;
 
     ListView listView;
-    Button createTodo;
+    Button createTodo,delete;
     EditText input;
 
     @Override
@@ -34,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         createTodo = findViewById(R.id.createTodo);
+        delete = findViewById(R.id.delete);
         input = findViewById(R.id.input);
 
         //Adapter
@@ -45,8 +45,16 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if(!input.getText().toString().equals("")){
-                    adapter.addItem(input.getText().toString());
+                    adapter.addItem(false,input.getText().toString(),false);
+                    input.setText("");
                 }
+            }
+        });
+
+        delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                adapter.removeAll();
             }
         });
     }
@@ -56,8 +64,6 @@ public class MainActivity extends AppCompatActivity {
     static {
         System.loadLibrary("native-lib");
     }
-
-
 }
 
 
