@@ -2,6 +2,7 @@ package com.example.todolist;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -97,15 +98,25 @@ public class ListViewAdapter extends BaseAdapter {
             holder.todo = (TextView) convertView.findViewById(R.id.todo);
             holder.isImportant = (CheckBox) convertView.findViewById(R.id.important);
 
+
+            holder.isFinished.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                    if(holder.isFinished.isChecked()){
+                        holder.todo.setPaintFlags(holder.todo.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+                    }else{
+                        holder.todo.setPaintFlags(0);
+                    }
+                }
+            });
             holder.isFinished.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     System.out.println(holder.isFinished.isChecked());
                     if(holder.isFinished.isChecked()) {
                         //맨 밑으로 내려보냄
-                        addItem(holder.isFinished.isChecked(), holder.todo.getText().toString(), holder.isImportant.isChecked());
                         remove(position);
-                        System.out.println("hhhh"+position);
+                        addItem(holder.isFinished.isChecked(), holder.todo.getText().toString(), holder.isImportant.isChecked());
                     }else{
                         //맨 위로 올려보냄
                         remove(position);
