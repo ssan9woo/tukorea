@@ -17,7 +17,13 @@ add_library( # Sets the name of the library.
              SHARED
 
              # Provides a relative path to your source file(s).
-             todo.c )
+        buzzer.c
+        led.c
+        fnd.c
+        dot.c
+        dot.h
+        textLcd.c
+        )
 
 # Searches for a specified prebuilt library and stores the path as a
 # variable. Because CMake includes system libraries in the search path by
