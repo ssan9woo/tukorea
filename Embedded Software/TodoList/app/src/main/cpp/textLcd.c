@@ -48,4 +48,16 @@ JNIEXPORT jint JNICALL Java_com_example_todolist_ListViewAdapter_textLcd(JNIEnv*
     return 0;
 }
 
+JNIEXPORT jint JNICALL Java_com_example_todolist_MainActivity_textLcd(JNIEnv* env,jobject this, jstring str1, jstring str2) {
+    jint result = 0;
+    const char* pstr1 = (*env) -> GetStringUTFChars(env,str1,NULL);
+    const char* pstr2 = (*env) -> GetStringUTFChars(env,str2,NULL);
+
+    fpga_text_lcd(pstr1,pstr2);
+    (*env) -> ReleaseStringUTFChars(env,str1,pstr1);
+    (*env) -> ReleaseStringUTFChars(env,str2,pstr2);
+
+    return 0;
+}
+
 

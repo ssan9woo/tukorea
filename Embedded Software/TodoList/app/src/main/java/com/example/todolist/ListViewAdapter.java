@@ -18,11 +18,15 @@ import java.util.ArrayList;
 
 public class ListViewAdapter extends BaseAdapter {
     private Context mContext = null;
+    @SuppressLint("StaticFieldLeak")
+    public static ListViewAdapter listViewContext;
+
     private ArrayList<TodoList> todoLists = new ArrayList<TodoList>();
 
     public ListViewAdapter(Context mContext) {
         super();
         this.mContext = mContext;
+        listViewContext = this;
     }
 
     @Override

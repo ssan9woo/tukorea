@@ -16,8 +16,10 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -25,9 +27,11 @@ public class MainActivity extends AppCompatActivity {
     @SuppressLint("StaticFieldLeak")
     static ListViewAdapter adapter = null;
 
+    int numberOfTodoLists = 0;
     ListView listView;
     Button createTodo,delete;
     EditText input;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +52,7 @@ public class MainActivity extends AppCompatActivity {
                 if(!input.getText().toString().equals("")){
                     adapter.addItem(false,input.getText().toString(),false);
                     input.setText("");
+                    // System.out.println(((ListViewAdapter) ListViewAdapter.listViewContext).getCount());
                 }
             }
         });
@@ -58,10 +63,35 @@ public class MainActivity extends AppCompatActivity {
                 adapter.removeAll();
             }
         });
+
+        class Clock implements Runnable{
+            Calendar cal = Calendar.getInstance();
+            @SuppressLint("SimpleDateFormat")
+            SimpleDateFormat sdf = new SimpleDateFormat("MM/dd HH:mm:ss");
+
+            @Override
+            public void run(){
+                while(true){
+                    Date now = new Date();
+                    String time = sdf.format(now);
+                    String todoCount = "Today's TodoList : " + String.valueOf(numberOfTodoLists);
+
+                    //textLcd(time,todoCount);
+                    try{
+                        Thread.sleep(1000);
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }
+
+        Clock clock = new Clock();
+        Thread clockThread = new Thread(clock);
+        clockThread.start();
     }
 
-    //public native String stringFromJNI();
-
+    public native int textLcd(String s1, String s2);
     static {
         System.loadLibrary("native-lib");
     }
