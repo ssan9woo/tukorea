@@ -3,7 +3,12 @@ package com.example.todolist;
 public class TodoList {
     boolean isFinished = false;
     String todo = null;
-    boolean isImportant = false;
+
+
+    public TodoList(boolean isFinished, String todo){
+        this.isFinished = isFinished;
+        this.todo = todo;
+    }
 
     public void setFinished(boolean isFinished){
         this.isFinished = isFinished;
@@ -13,20 +18,12 @@ public class TodoList {
         this.todo = todo;
     }
 
-    public void setImportant(boolean isImportant){
-        this.isImportant = isImportant;
-    }
-
     public boolean getFinished(){
         return this.isFinished;
     }
 
     public String getTodo(){
         return this.todo;
-    }
-
-    public boolean getImportant(){
-        return this.isImportant;
     }
 
 }

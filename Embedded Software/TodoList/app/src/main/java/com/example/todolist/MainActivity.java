@@ -1,6 +1,9 @@
 package com.example.todolist;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -24,43 +27,41 @@ import java.util.Date;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
-    @SuppressLint("StaticFieldLeak")
-    static ListViewAdapter adapter = null;
+    public static Context mainContext;
+    private ArrayList<TodoList> todoLists;
+    private CustomAdapter mAdapter;
 
-    int numberOfTodoLists = 0;
-    ListView listView;
-    Button createTodo,delete;
+    Button createTodo;
     EditText input;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        mainContext = this;
+
         createTodo = findViewById(R.id.createTodo);
-        delete = findViewById(R.id.delete);
         input = findViewById(R.id.input);
 
-        //Adapter
-        adapter = new ListViewAdapter(this);
-        listView = (ListView) findViewById(R.id.list);
-        listView.setAdapter(adapter);
+        RecyclerView mRecyclerView = (RecyclerView) findViewById(R.id.recyclerview_main_list);
+        LinearLayoutManager mLinearLayoutManager = new LinearLayoutManager(this);
+        mRecyclerView.setLayoutManager(mLinearLayoutManager);
+
+        todoLists = new ArrayList<>();
+        mAdapter = new CustomAdapter(todoLists);
+        mRecyclerView.setAdapter(mAdapter);
+
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(mRecyclerView.getContext(),
+                mLinearLayoutManager.getOrientation());
+        mRecyclerView.addItemDecoration(dividerItemDecoration);
 
         createTodo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if(!input.getText().toString().equals("")){
-                    adapter.addItem(false,input.getText().toString(),false);
+                    addTodo(input.getText().toString());
                     input.setText("");
-                    // System.out.println(((ListViewAdapter) ListViewAdapter.listViewContext).getCount());
                 }
-            }
-        });
-
-        delete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                adapter.removeAll();
             }
         });
 
@@ -74,7 +75,6 @@ public class MainActivity extends AppCompatActivity {
                 while(true){
                     Date now = new Date();
                     String time = sdf.format(now);
-                    String todoCount = "Today's TodoList : " + String.valueOf(numberOfTodoLists);
 
                     //textLcd(time,todoCount);
                     try{
@@ -85,15 +85,25 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         }
-
-        Clock clock = new Clock();
-        Thread clockThread = new Thread(clock);
-        clockThread.start();
+//        Clock clock = new Clock();
+//        Thread clockThread = new Thread(clock);
+//        clockThread.start();
     }
 
     public native int textLcd(String s1, String s2);
     static {
         System.loadLibrary("native-lib");
+    }
+
+    void addTodo(String s){
+        TodoList todo = new TodoList(false,s);
+        todoLists.add(todo);
+        mAdapter.notifyDataSetChanged();
+    }
+
+    void deleteTodo(int index){
+        todoLists.remove(index);
+        mAdapter.notifyDataSetChanged();
     }
 }
 
