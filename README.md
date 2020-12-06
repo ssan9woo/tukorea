@@ -112,3 +112,5 @@ Achro-I.MX6Q : 202004 ~ 202007
 
 ## 11. IOT실습
 - ESP-8266 제어에 필요한 코드들과 Test코드 존재.
+
+## 12. Embedded Software(응용 sw)
