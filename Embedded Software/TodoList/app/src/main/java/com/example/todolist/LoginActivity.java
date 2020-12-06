@@ -24,6 +24,10 @@ public class LoginActivity extends AppCompatActivity {
         inputPW = findViewById(R.id.inputPW);
         loginButton = findViewById(R.id.loginButton);
 
+        //임시
+        inputID.setText(ID);
+        inputPW.setText(PW);
+
         //editText에서 pushSwitch로 입력받기
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override

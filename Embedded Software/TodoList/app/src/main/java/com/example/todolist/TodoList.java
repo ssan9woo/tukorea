@@ -1,9 +1,8 @@
 package com.example.todolist;
-
-public class TodoList {
+import java.io.Serializable;
+public class TodoList implements Serializable{
     boolean isFinished = false;
     String todo = null;
-
 
     public TodoList(boolean isFinished, String todo){
         this.isFinished = isFinished;
