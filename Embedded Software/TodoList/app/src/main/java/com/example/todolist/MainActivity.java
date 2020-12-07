@@ -9,36 +9,27 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.KeyEvent;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.EditText;
-import android.widget.ListView;
 import android.widget.TextView;
 
-import java.lang.reflect.Array;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
-import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
     public static Context mainContext;
     public static ArrayList<TodoList> todoLists;
     public static CustomAdapter mAdapter;
-    int day;
+    int day,currentTodoCount, totalTodoCount;
 
     Button createTodo;
     EditText input;
+    TextView text;
 
+    @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,6 +39,32 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = getIntent();
         setTitle(intent.getStringExtra("date"));
         day = intent.getIntExtra("day",0);
+
+        //todocount
+        totalTodoCount = intent.getIntExtra("total",0);
+        currentTodoCount = intent.getIntExtra("current",0);
+
+        //TodoCount Text
+        text = findViewById(R.id.textTodoCount);
+        text.setText("Total Todo : " + totalTodoCount + "   Current Todo : " + currentTodoCount);
+
+        //Percent : LED
+        double percent = (currentTodoCount / (double)totalTodoCount) * 100;
+
+        if(percent >= 0 && percent <= 25){
+            //0
+            System.out.println("0");
+        }else if (percent > 25 && percent <= 50){
+            //1
+            System.out.println("1");
+        }else if (percent > 50 && percent <= 75){
+            //2
+            System.out.println("2");
+        }else if (percent > 75 && percent <= 100){
+            //3
+            System.out.println("3");
+        }
+
 
         mainContext = this;
 
@@ -88,7 +105,7 @@ public class MainActivity extends AppCompatActivity {
                 while(true){
                     Date now = new Date();
                     String time = sdf.format(now);
-
+                    String todoCount = "Today's Todo : " + String.valueOf(totalTodoCount);
                     //textLcd(time,todoCount);
                     try{
                         Thread.sleep(1000);
@@ -101,14 +118,14 @@ public class MainActivity extends AppCompatActivity {
 //        Clock clock = new Clock();
 //        Thread clockThread = new Thread(clock);
 //        clockThread.start();
-        ArrayList<TodoList> tt = ((CalendarActivity) CalendarActivity.calendarContext).abc(day);
+
+        ArrayList<TodoList> tt = ((CalendarActivity) CalendarActivity.calendarContext).getDayTodoList(day);
         if(tt != null){
             for(int i = 0 ; i < tt.size(); i++){
                 addTodo(tt.get(i));
             }
         }
 
-        System.out.println("size : " + todoLists.size());
         mAdapter.notifyDataSetChanged();
     }
 
@@ -122,17 +139,21 @@ public class MainActivity extends AppCompatActivity {
         todoLists.add(to);
         mAdapter.notifyDataSetChanged();
     }
+
     void addTodo(TodoList todo){
         todoLists.add(todo);
         mAdapter.notifyDataSetChanged();
     }
+
     void addTodo(String s){
+        totalTodoCount += 1;
         TodoList todo = new TodoList(false,s);
         todoLists.add(todo);
         mAdapter.notifyDataSetChanged();
     }
 
     void deleteTodo(int index){
+        totalTodoCount -= 1;
         todoLists.remove(index);
         mAdapter.notifyDataSetChanged();
     }
@@ -142,7 +163,6 @@ public class MainActivity extends AppCompatActivity {
         todoLists.add(todo);
         todo.isFinished = true;
         mAdapter.notifyDataSetChanged();
-        System.out.println("last");
     }
 
     void setItemIndexToFirst(TodoList todo){
@@ -150,21 +170,12 @@ public class MainActivity extends AppCompatActivity {
         todoLists.add(0,todo);
         todo.isFinished = false;
         mAdapter.notifyDataSetChanged();
-        System.out.println("first");
     }
 
     public void onPause(){
         super.onPause();
         ((CalendarActivity) CalendarActivity.calendarContext).getTodoLists(todoLists,day);
     }
-
-    public void getInitList(ArrayList<TodoList> todoLists){
-        MainActivity.todoLists = todoLists;
-        mAdapter.notifyDataSetChanged();
-
-        System.out.println(MainActivity.todoLists);
-    }
-
 }
 
 

@@ -4,10 +4,14 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class LoginActivity extends AppCompatActivity {
     final static String ID = "sangwoo";
@@ -37,10 +41,42 @@ public class LoginActivity extends AppCompatActivity {
                     startActivity(intent);
                 } else{
                     //부저
-                    //Toast
                     Toast.makeText(LoginActivity.this, "로그인 오류", Toast.LENGTH_SHORT).show();
                 }
             }
         });
+
+        TimerTask task = new TimerTask() {
+            Handler handler = new Handler();
+            @Override
+            public void run() {
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        int value;
+                        value = DeviceOpen();
+
+                        if(value != -1)
+                            value = ReceivePushSwitchValue();
+                        if(value != -1)
+                            DeviceClose();
+
+                        //click 구현
+                        String str = Integer.toString(value,16);
+                    }
+                },100);
+            }
+        };
+
+        Timer t = new Timer();
+        t.schedule(task,100,100);
+    }
+
+    public native int DeviceOpen();
+    public native int DeviceClose();
+    public native int ReceivePushSwitchValue();
+
+    static{
+        System.loadLibrary("native-lib");
     }
 }

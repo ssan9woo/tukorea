@@ -49,22 +49,14 @@ public class CalendarActivity extends AppCompatActivity {
                 SimpleDateFormat format = new SimpleDateFormat("yyyy년 MMM dd일 [E]", Locale.KOREA);
                 Intent intent = new Intent(getApplicationContext(),MainActivity.class);
                 intent.putExtra("date",format.format(date.getDate()));
+
                 int day = Integer.parseInt(format.format(date.getDate()).substring(10,12));
                 intent.putExtra("day",day);
 
-                ArrayList<TodoList> dayList = new ArrayList<TodoList>();
+                //todo count
+                intent.putExtra("total",getTotalTodoCount(day));
+                intent.putExtra("current",getCurrentTodoCount(day));
 
-                for(int i = 0; i < monthOfList[day].length; i++){
-                    if(monthOfList[day][i] != null){
-                        dayList.add(monthOfList[day][i]);
-                    }
-                }
-
-                if(dayList.size() > 0){
-                    intent.putExtra("todo",dayList);
-                    System.out.println("dayList!!!!"+ dayList);
-                    ((MainActivity) MainActivity.mainContext).getInitList(dayList);
-                }
                 startActivity(intent);
             }
         });
@@ -83,7 +75,7 @@ public class CalendarActivity extends AppCompatActivity {
         monthOfList[day] = d;
     }
 
-    public ArrayList<TodoList> abc(int day){
+    public ArrayList<TodoList> getDayTodoList(int day){
         ArrayList<TodoList> dayList = new ArrayList<TodoList>();
 
         for(int i = 0; i < monthOfList[day].length; i++){
@@ -96,5 +88,27 @@ public class CalendarActivity extends AppCompatActivity {
             return dayList;
         }
         return null;
+    }
+
+    public int getTotalTodoCount(int day){
+        int count = 0;
+        for(int i = 0; i < monthOfList[day].length; i++){
+            if(monthOfList[day][i] != null){
+                count += 1;
+            }
+        }
+        return count;
+    }
+
+    public int getCurrentTodoCount(int day){
+        int count = 0;
+        for(int i = 0; i < monthOfList[day].length; i++){
+            if(monthOfList[day][i] != null){
+                if(!monthOfList[day][i].isFinished){
+                    count += 1;
+                }
+            }
+        }
+        return count;
     }
 }

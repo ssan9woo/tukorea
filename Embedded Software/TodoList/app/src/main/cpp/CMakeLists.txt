@@ -23,6 +23,7 @@ add_library( # Sets the name of the library.
         dot.c
         dot.h
         textLcd.c
+        push.c
         )
 
 # Searches for a specified prebuilt library and stores the path as a

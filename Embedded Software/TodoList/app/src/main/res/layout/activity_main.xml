@@ -22,7 +22,7 @@
             android:cursorVisible="true"
             android:hint="해야 할 일을 입력해주세요."
             android:inputType="textNoSuggestions"
-            android:paddingLeft="15dp"></EditText>
+            android:paddingLeft="15dp" />
 
         <Button
             android:id="@+id/createTodo"
@@ -32,8 +32,17 @@
             android:background="@drawable/button_shape"
             android:fontFamily="@font/binggrae"
             android:onClick="inputTodo"
-            android:text="@string/createTodo"></Button>
+            android:text="@string/createTodo" />
+
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/textTodoCount"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="남은투두투"
+        android:textColor="@color/colorPrimary"
+        android:textSize="20dp" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerview_main_list"
