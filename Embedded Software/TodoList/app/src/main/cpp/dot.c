@@ -25,7 +25,7 @@ int fpga_dot(int x){
     return 0;
 }
 
-JNIEXPORT jint JNICALL Java_com_example_todolist_ListViewAdapter_dot(JNIEnv* env,jobject this,jint val) {
+JNIEXPORT jint JNICALL Java_com_example_todolist_MainActivity_dot(JNIEnv* env,jobject this, jint val) {
     fpga_dot(val);
     return 0;
 }

@@ -44,6 +44,10 @@ public class MainActivity extends AppCompatActivity {
         totalTodoCount = intent.getIntExtra("total",0);
         currentTodoCount = intent.getIntExtra("current",0);
 
+        //Dot Matrix
+        if(currentTodoCount <= 9)
+            dot(currentTodoCount);
+
         //TodoCount Text
         text = findViewById(R.id.textTodoCount);
         text.setText("Total Todo : " + totalTodoCount + "   Current Todo : " + currentTodoCount);
@@ -52,19 +56,14 @@ public class MainActivity extends AppCompatActivity {
         double percent = (currentTodoCount / (double)totalTodoCount) * 100;
 
         if(percent >= 0 && percent <= 25){
-            //0
-            System.out.println("0");
+            led(0);
         }else if (percent > 25 && percent <= 50){
-            //1
-            System.out.println("1");
+            led(1);
         }else if (percent > 50 && percent <= 75){
-            //2
-            System.out.println("2");
+            led(2);
         }else if (percent > 75 && percent <= 100){
-            //3
-            System.out.println("3");
+            led(3);
         }
-
 
         mainContext = this;
 
@@ -175,6 +174,13 @@ public class MainActivity extends AppCompatActivity {
     public void onPause(){
         super.onPause();
         ((CalendarActivity) CalendarActivity.calendarContext).getTodoLists(todoLists,day);
+    }
+
+    public native int dot(int x);
+    public native int led(int x);
+
+    static{
+        System.loadLibrary("native-lib");
     }
 }
 

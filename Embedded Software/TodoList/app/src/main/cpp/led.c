@@ -16,13 +16,13 @@ int fpga_led(int x){
    unsigned char per[] = {0x00,0x11,0x33,0x77,0xFF};
    dev = open(LED_DEVICE, O_RDWR);
 
-   write(dev,&val[x], sizeof(unsigned char));
+   write(dev,&per[x], sizeof(unsigned char));
    close(dev);
 
    return 0;
 }
 
-JNIEXPORT jint JNICALL Java_com_example_todolist_ListViewAdapter_led(JNIEnv* env,jobject this,jint val) {
+JNIEXPORT jint JNICALL Java_com_example_todolist_MainActivity_led(JNIEnv* env,jobject this,jint val) {
     fpga_led(val);
     return NULL;
 }

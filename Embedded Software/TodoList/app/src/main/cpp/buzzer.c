@@ -26,7 +26,7 @@ int fpga_buzzer(int x){
 }
 
 
-JNIEXPORT jint JNICALL Java_com_example_todolist_ListViewAdapter_buzzer(JNIEnv* env,jobject this,jint val) {
+JNIEXPORT jint JNICALL Java_com_example_todolist_LoginActivity_buzzer(JNIEnv* env,jobject this, jint val) {
     jint result;
     __android_log_print(ANDROID_LOG_INFO,"example","value = %d",val);
     result = fpga_buzzer(val);

@@ -2,6 +2,7 @@ package com.example.todolist;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -41,6 +42,14 @@ public class LoginActivity extends AppCompatActivity {
                     startActivity(intent);
                 } else{
                     //부저
+                    buzzer(1);
+                    Handler delayHandler = new Handler();
+                    delayHandler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            buzzer(0);
+                        }
+                    }, 100);
                     Toast.makeText(LoginActivity.this, "로그인 오류", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -51,6 +60,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void run() {
                 handler.postDelayed(new Runnable() {
+                    @SuppressLint("SetTextI18n")
                     @Override
                     public void run() {
                         int value;
@@ -63,6 +73,7 @@ public class LoginActivity extends AppCompatActivity {
 
                         //click 구현
                         String str = Integer.toString(value,16);
+                        inputPW.setText(inputPW.getText().toString() + str);
                     }
                 },100);
             }
@@ -75,6 +86,7 @@ public class LoginActivity extends AppCompatActivity {
     public native int DeviceOpen();
     public native int DeviceClose();
     public native int ReceivePushSwitchValue();
+    public native int buzzer(int x);
 
     static{
         System.loadLibrary("native-lib");
