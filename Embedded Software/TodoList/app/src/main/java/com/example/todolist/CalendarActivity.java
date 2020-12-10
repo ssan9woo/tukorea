@@ -7,27 +7,34 @@ import com.prolificinteractive.materialcalendarview.CalendarMode;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.CalendarView;
+import android.widget.TextView;
+
+import org.w3c.dom.Text;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
 
 public class CalendarActivity extends AppCompatActivity {
     TodoList[][] monthOfList = new TodoList[32][10];
-
+    TextView today, todayList;
     public static Context calendarContext;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_calendar);
+        today = (TextView) findViewById(R.id.today);
+        todayList = (TextView) findViewById(R.id.todayList);
         calendarContext = this;
 
         MaterialCalendarView cal = findViewById(R.id.calendarView);
@@ -42,6 +49,12 @@ public class CalendarActivity extends AppCompatActivity {
                 new SundayDecorator(),
                 new SaturdayDecorator(),
                 new OneDayDecorator());
+
+        //today : n월 n일
+        SimpleDateFormat format = new SimpleDateFormat("MMM월 dd일 [E]", Locale.KOREA);
+        Date day = cal.getCurrentDate().getDate();
+        String s = format.format(day);
+        today.setText("Today : " + s);
 
         cal.setOnDateChangedListener(new OnDateSelectedListener() {
             @Override
@@ -62,8 +75,23 @@ public class CalendarActivity extends AppCompatActivity {
         });
     }
 
+    @SuppressLint("SetTextI18n")
     public void onStart(){
         super.onStart();
+        //TextView 설정 -> Current and total
+        //todayList : 1. 2. 3. ....
+        SimpleDateFormat format = new SimpleDateFormat("dd", Locale.KOREA);
+        Date today = new Date();
+
+        int day = Integer.parseInt(format.format(today));
+        int cnt = 0;
+        StringBuilder s = new StringBuilder();
+        for(int i = 0; i < monthOfList[day].length; i++){
+            if(monthOfList[day][i] != null && !monthOfList[day][i].isFinished){
+                s.append(cnt).append(". ").append(monthOfList[day][i].todo).append("\n");
+            }
+        }
+        todayList.setText(s);
     }
 
     public void getTodoLists(ArrayList<TodoList> todoLists, int day){
