@@ -33,8 +33,9 @@ public class CalendarActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_calendar);
-        today = (TextView) findViewById(R.id.today);
-        todayList = (TextView) findViewById(R.id.todayList);
+//        today = (TextView) findViewById(R.id.today);
+//        todayList = (TextView) findViewById(R.id.todayList);
+
         calendarContext = this;
 
         MaterialCalendarView cal = findViewById(R.id.calendarView);
@@ -51,10 +52,10 @@ public class CalendarActivity extends AppCompatActivity {
                 new OneDayDecorator());
 
         //today : n월 n일
-        SimpleDateFormat format = new SimpleDateFormat("MMM월 dd일 [E]", Locale.KOREA);
+        SimpleDateFormat format = new SimpleDateFormat("MMM dd일 [E]", Locale.KOREA);
         Date day = cal.getCurrentDate().getDate();
         String s = format.format(day);
-        today.setText("Today : " + s);
+//        today.setText("Today : " + s);
 
         cal.setOnDateChangedListener(new OnDateSelectedListener() {
             @Override
@@ -78,6 +79,7 @@ public class CalendarActivity extends AppCompatActivity {
     @SuppressLint("SetTextI18n")
     public void onStart(){
         super.onStart();
+        System.out.println("starrt");
         //TextView 설정 -> Current and total
         //todayList : 1. 2. 3. ....
         SimpleDateFormat format = new SimpleDateFormat("dd", Locale.KOREA);
@@ -91,7 +93,7 @@ public class CalendarActivity extends AppCompatActivity {
                 s.append(cnt).append(". ").append(monthOfList[day][i].todo).append("\n");
             }
         }
-        todayList.setText(s);
+//        todayList.setText("klsadflkadflkamf");
     }
 
     public void getTodoLists(ArrayList<TodoList> todoLists, int day){

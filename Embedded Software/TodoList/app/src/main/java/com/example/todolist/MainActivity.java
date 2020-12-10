@@ -50,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
 
         //TodoCount Text
         text = findViewById(R.id.textTodoCount);
-//        setTodoCountText(totalTodoCount, currentTodoCount);
+        setTodoCountText(totalTodoCount, currentTodoCount);
 
         //Percent : LED
         double percent = (currentTodoCount / (double)totalTodoCount) * 100;
@@ -89,9 +89,8 @@ public class MainActivity extends AppCompatActivity {
                 if(!input.getText().toString().equals("")){
                     addTodo(input.getText().toString());
                     input.setText("");
-                    totalTodoCount += 1;
                     currentTodoCount += 1;
-//                    setTodoCountText(totalTodoCount, currentTodoCount);
+                    setTodoCountText(totalTodoCount, currentTodoCount);
                 }
             }
         });
@@ -117,9 +116,9 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         }
-        Clock clock = new Clock();
-        Thread clockThread = new Thread(clock);
-        clockThread.start();
+//        Clock clock = new Clock();
+//        Thread clockThread = new Thread(clock);
+//        clockThread.start();
 
         ArrayList<TodoList> tt = ((CalendarActivity) CalendarActivity.calendarContext).getDayTodoList(day);
         if(tt != null){
@@ -155,9 +154,9 @@ public class MainActivity extends AppCompatActivity {
         totalTodoCount -= 1;
         todoLists.remove(index);
         mAdapter.notifyDataSetChanged();
-        totalTodoCount -= 1;
-        currentTodoCount -= 1;
-//        setTodoCountText(totalTodoCount,currentTodoCount);
+        if(currentTodoCount > 0)
+            currentTodoCount -= 1;
+        setTodoCountText(totalTodoCount,currentTodoCount);
     }
 
     void setItemIndexToLast(TodoList todo){
@@ -166,7 +165,7 @@ public class MainActivity extends AppCompatActivity {
         todo.isFinished = true;
         mAdapter.notifyDataSetChanged();
         currentTodoCount -= 1;
-//        setTodoCountText(totalTodoCount,currentTodoCount);
+        setTodoCountText(totalTodoCount,currentTodoCount);
     }
 
     void setItemIndexToFirst(TodoList todo){
@@ -175,7 +174,7 @@ public class MainActivity extends AppCompatActivity {
         todo.isFinished = false;
         mAdapter.notifyDataSetChanged();
         currentTodoCount += 1;
-//        setTodoCountText(totalTodoCount,currentTodoCount);
+        setTodoCountText(totalTodoCount,currentTodoCount);
     }
 
     public void onPause(){
