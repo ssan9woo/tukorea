@@ -50,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
 
         //TodoCount Text
         text = findViewById(R.id.textTodoCount);
-//        setTodoCountText(totalTodoCount, currentTodoCount);
+        text.setText("Total Todo : " + totalTodoCount + "   Current Todo : " + currentTodoCount);
 
         //Percent : LED
         double percent = (currentTodoCount / (double)totalTodoCount) * 100;
@@ -89,9 +89,6 @@ public class MainActivity extends AppCompatActivity {
                 if(!input.getText().toString().equals("")){
                     addTodo(input.getText().toString());
                     input.setText("");
-                    totalTodoCount += 1;
-                    currentTodoCount += 1;
-//                    setTodoCountText(totalTodoCount, currentTodoCount);
                 }
             }
         });
@@ -108,7 +105,7 @@ public class MainActivity extends AppCompatActivity {
                     Date now = new Date();
                     String time = sdf.format(now);
                     String todoCount = "Today's Todo : " + String.valueOf(totalTodoCount);
-                    textLcd(time,todoCount);
+                    //textLcd(time,todoCount);
                     try{
                         Thread.sleep(1000);
                     }catch (Exception e){
@@ -117,9 +114,9 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         }
-        Clock clock = new Clock();
-        Thread clockThread = new Thread(clock);
-        clockThread.start();
+//        Clock clock = new Clock();
+//        Thread clockThread = new Thread(clock);
+//        clockThread.start();
 
         ArrayList<TodoList> tt = ((CalendarActivity) CalendarActivity.calendarContext).getDayTodoList(day);
         if(tt != null){
@@ -131,14 +128,17 @@ public class MainActivity extends AppCompatActivity {
         mAdapter.notifyDataSetChanged();
     }
 
+    public native int textLcd(String s1, String s2);
     static {
         System.loadLibrary("native-lib");
     }
 
-    @SuppressLint("SetTextI18n")
-    void setTodoCountText(int total, int current){
-        text.setText("Total Todo : " + total + "   Current Todo : " + current);
+    void addTodo(boolean isFinished, String todo){
+        TodoList to = new TodoList(isFinished,todo);
+        todoLists.add(to);
+        mAdapter.notifyDataSetChanged();
     }
+
     void addTodo(TodoList todo){
         todoLists.add(todo);
         mAdapter.notifyDataSetChanged();
@@ -155,9 +155,6 @@ public class MainActivity extends AppCompatActivity {
         totalTodoCount -= 1;
         todoLists.remove(index);
         mAdapter.notifyDataSetChanged();
-        totalTodoCount -= 1;
-        currentTodoCount -= 1;
-//        setTodoCountText(totalTodoCount,currentTodoCount);
     }
 
     void setItemIndexToLast(TodoList todo){
@@ -165,8 +162,6 @@ public class MainActivity extends AppCompatActivity {
         todoLists.add(todo);
         todo.isFinished = true;
         mAdapter.notifyDataSetChanged();
-        currentTodoCount -= 1;
-//        setTodoCountText(totalTodoCount,currentTodoCount);
     }
 
     void setItemIndexToFirst(TodoList todo){
@@ -174,8 +169,6 @@ public class MainActivity extends AppCompatActivity {
         todoLists.add(0,todo);
         todo.isFinished = false;
         mAdapter.notifyDataSetChanged();
-        currentTodoCount += 1;
-//        setTodoCountText(totalTodoCount,currentTodoCount);
     }
 
     public void onPause(){
@@ -185,8 +178,6 @@ public class MainActivity extends AppCompatActivity {
 
     public native int dot(int x);
     public native int led(int x);
-    public native int textLcd(String s1, String s2);
-
 
     static{
         System.loadLibrary("native-lib");
