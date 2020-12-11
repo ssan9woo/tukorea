@@ -45,25 +45,14 @@ public class MainActivity extends AppCompatActivity {
         currentTodoCount = intent.getIntExtra("current",0);
 
         //Dot Matrix
-        if(currentTodoCount <= 9)
-            dot(currentTodoCount);
+        todoCountDot();
 
         //TodoCount Text
         text = findViewById(R.id.textTodoCount);
         setTodoCountText(totalTodoCount, currentTodoCount);
 
-        //Percent : LED
-        double percent = (currentTodoCount / (double)totalTodoCount) * 100;
-
-        if(percent >= 0 && percent <= 25){
-            led(0);
-        }else if (percent > 25 && percent <= 50){
-            led(1);
-        }else if (percent > 50 && percent <= 75){
-            led(2);
-        }else if (percent > 75 && percent <= 100){
-            led(3);
-        }
+        //LED
+        todoCountLed();
 
         mainContext = this;
 
@@ -91,6 +80,8 @@ public class MainActivity extends AppCompatActivity {
                     input.setText("");
                     currentTodoCount += 1;
                     setTodoCountText(totalTodoCount, currentTodoCount);
+                    todoCountLed();
+                    todoCountDot();
                 }
             }
         });
@@ -116,9 +107,6 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         }
-//        Clock clock = new Clock();
-//        Thread clockThread = new Thread(clock);
-//        clockThread.start();
 
         ArrayList<TodoList> tt = ((CalendarActivity) CalendarActivity.calendarContext).getDayTodoList(day);
         if(tt != null){
@@ -128,6 +116,10 @@ public class MainActivity extends AppCompatActivity {
         }
 
         mAdapter.notifyDataSetChanged();
+//        Clock clock = new Clock();
+//        Thread clockThread = new Thread(clock);
+//        clockThread.start();
+
     }
 
     static {
@@ -157,6 +149,8 @@ public class MainActivity extends AppCompatActivity {
         if(currentTodoCount > 0)
             currentTodoCount -= 1;
         setTodoCountText(totalTodoCount,currentTodoCount);
+        todoCountDot();
+        todoCountLed();
     }
 
     void setItemIndexToLast(TodoList todo){
@@ -166,6 +160,8 @@ public class MainActivity extends AppCompatActivity {
         mAdapter.notifyDataSetChanged();
         currentTodoCount -= 1;
         setTodoCountText(totalTodoCount,currentTodoCount);
+        todoCountDot();
+        todoCountLed();
     }
 
     void setItemIndexToFirst(TodoList todo){
@@ -175,11 +171,40 @@ public class MainActivity extends AppCompatActivity {
         mAdapter.notifyDataSetChanged();
         currentTodoCount += 1;
         setTodoCountText(totalTodoCount,currentTodoCount);
+        todoCountDot();
+        todoCountLed();
     }
 
     public void onPause(){
         super.onPause();
+        removeDotAndLed();
         ((CalendarActivity) CalendarActivity.calendarContext).getTodoLists(todoLists,day);
+    }
+
+    public void todoCountLed(){
+        //Percent : LED
+        double percent = ((totalTodoCount - currentTodoCount) / (double)totalTodoCount) * 100;
+        System.out.println(percent);
+        if(percent == 0 || Double.isNaN(percent)) {
+            led(0);
+        }else if(percent > 0 && percent < 50){
+            led(1);
+        }else if(percent >= 50 && percent < 75){
+            led(2);
+        }else if(percent >=75 && percent < 100){
+            led(3);
+        }else if(percent == 100){
+            led(4);
+        }
+    }
+    public void todoCountDot(){
+        if(currentTodoCount <= 9)
+            dot(currentTodoCount);
+    }
+
+    public void removeDotAndLed(){
+        dot(0);
+        led(0);
     }
 
     public native int dot(int x);

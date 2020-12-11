@@ -27,22 +27,28 @@ import java.util.Locale;
 public class CalendarActivity extends AppCompatActivity {
     TodoList[][] monthOfList = new TodoList[32][10];
     TextView today, todayList;
+    int todayNum = 0;
     public static Context calendarContext;
 
+    @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_calendar);
-//        today = (TextView) findViewById(R.id.today);
-//        todayList = (TextView) findViewById(R.id.todayList);
+        today = (TextView) findViewById(R.id.today);
+        todayList = (TextView) findViewById(R.id.todayList);
+
+
+        led(0);
+        dot(0);
 
         calendarContext = this;
 
         MaterialCalendarView cal = findViewById(R.id.calendarView);
         cal.state().edit()
                 .setFirstDayOfWeek(Calendar.SUNDAY)
-                .setMinimumDate(CalendarDay.from(2020, 12-1, 1))
-                .setMaximumDate(CalendarDay.from(2020, 12-1, 31))
+                .setMinimumDate(CalendarDay.from(2020, 1-1, 1))
+                .setMaximumDate(CalendarDay.from(2020, 1-1, 31))
                 .setCalendarDisplayMode(CalendarMode.MONTHS)
                 .commit();
 
@@ -52,10 +58,12 @@ public class CalendarActivity extends AppCompatActivity {
                 new OneDayDecorator());
 
         //today : n월 n일
-        SimpleDateFormat format = new SimpleDateFormat("MMM dd일 [E]", Locale.KOREA);
-        Date day = cal.getCurrentDate().getDate();
-        String s = format.format(day);
-//        today.setText("Today : " + s);
+        SimpleDateFormat format = new SimpleDateFormat("MMM dd일", Locale.KOREA);
+        Date now = new Date();
+        String time = format.format(now);
+        today.setText("Today : " + time);
+        todayNum = Integer.parseInt(time.substring(3,5));
+
 
         cal.setOnDateChangedListener(new OnDateSelectedListener() {
             @Override
@@ -63,8 +71,7 @@ public class CalendarActivity extends AppCompatActivity {
                 SimpleDateFormat format = new SimpleDateFormat("yyyy년 MMM dd일 [E]", Locale.KOREA);
                 Intent intent = new Intent(getApplicationContext(),MainActivity.class);
                 intent.putExtra("date",format.format(date.getDate()));
-
-                int day = Integer.parseInt(format.format(date.getDate()).substring(10,12));
+                int day = Integer.parseInt(format.format(date.getDate()).substring(9,11));
                 intent.putExtra("day",day);
 
                 //todo count
@@ -74,6 +81,30 @@ public class CalendarActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        class Clock implements Runnable{
+            Calendar cal = Calendar.getInstance();
+            @SuppressLint("SimpleDateFormat")
+            SimpleDateFormat sdf = new SimpleDateFormat("MM/dd HH:mm:ss");
+
+            @Override
+            public void run(){
+                while(true){
+                    Date now = new Date();
+                    String time = sdf.format(now);
+                    textLcd(time,"               ");
+                    try{
+                        Thread.sleep(1000);
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }
+        Clock clock = new Clock();
+        Thread clockThread = new Thread(clock);
+        clockThread.start();
+
     }
 
     @SuppressLint("SetTextI18n")
@@ -85,15 +116,21 @@ public class CalendarActivity extends AppCompatActivity {
         SimpleDateFormat format = new SimpleDateFormat("dd", Locale.KOREA);
         Date today = new Date();
 
-        int day = Integer.parseInt(format.format(today));
+        int day = todayNum;
+        System.out.println("dhahaha : " + day);
         int cnt = 0;
+
         StringBuilder s = new StringBuilder();
         for(int i = 0; i < monthOfList[day].length; i++){
-            if(monthOfList[day][i] != null && !monthOfList[day][i].isFinished){
-                s.append(cnt).append(". ").append(monthOfList[day][i].todo).append("\n");
+            if(monthOfList[day][i] != null){
+                if(!monthOfList[day][i].isFinished){
+                    s.append(cnt).append(". ").append(monthOfList[day][i].todo).append("\n");
+                    cnt += 1;
+                    System.out.println(s);
+                }
             }
         }
-//        todayList.setText("klsadflkadflkamf");
+        todayList.setText(s);
     }
 
     public void getTodoLists(ArrayList<TodoList> todoLists, int day){
@@ -140,5 +177,12 @@ public class CalendarActivity extends AppCompatActivity {
             }
         }
         return count;
+    }
+    public native int dot(int x);
+    public native int led(int x);
+    public native int textLcd(String s1, String s2);
+
+    static{
+        System.loadLibrary("native-lib");
     }
 }

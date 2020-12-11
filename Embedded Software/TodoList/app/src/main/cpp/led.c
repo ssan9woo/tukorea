@@ -27,4 +27,8 @@ JNIEXPORT jint JNICALL Java_com_example_todolist_MainActivity_led(JNIEnv* env,jo
     return NULL;
 }
 
+JNIEXPORT jint JNICALL Java_com_example_todolist_CalendarActivity_led(JNIEnv* env,jobject this,jint val) {
+   fpga_led(val);
+   return NULL;
+}
 

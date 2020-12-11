@@ -19,6 +19,7 @@ public class LoginActivity extends AppCompatActivity {
     final static String PW = "1234";
     EditText inputID, inputPW;
     Button loginButton;
+    boolean flag = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,8 +31,8 @@ public class LoginActivity extends AppCompatActivity {
         loginButton = findViewById(R.id.loginButton);
 
         //임시
-        inputID.setText(ID);
-        inputPW.setText(PW);
+//        inputID.setText(ID);
+//        inputPW.setText(PW);
 
         //editText에서 pushSwitch로 입력받기
         loginButton.setOnClickListener(new View.OnClickListener() {
@@ -40,6 +41,7 @@ public class LoginActivity extends AppCompatActivity {
                 if(inputID.getText().toString().equals(ID) && inputPW.getText().toString().equals(PW)){
                     Intent intent = new Intent(getApplicationContext(),CalendarActivity.class);
                     startActivity(intent);
+                    Toast.makeText(getApplicationContext(),"start",Toast.LENGTH_SHORT).show();
                 } else{
                     //부저
                     buzzer(1);
@@ -49,7 +51,7 @@ public class LoginActivity extends AppCompatActivity {
                         public void run() {
                             buzzer(0);
                         }
-                    }, 100);
+                    }, 200);
                     Toast.makeText(LoginActivity.this, "로그인 오류", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -72,10 +74,39 @@ public class LoginActivity extends AppCompatActivity {
                             DeviceClose();
 
                         //click 구현
-                        String str = Integer.toString(value,16);
-                        inputPW.setText(inputPW.getText().toString() + str);
+                        String str = Integer.toString(value);
+
+                        if(!flag) {
+                            if (!str.equals("0")) {
+                                flag = true;
+
+                                String s = "";
+                                if (str.equals("1"))
+                                    s = "1";
+                                else if (str.equals("2"))
+                                    s = "2";
+                                else if (str.equals("4"))
+                                    s = "3";
+                                else if (str.equals("8"))
+                                    s = "4";
+                                else if (str.equals("16"))
+                                    s = "5";
+                                else if (str.equals("32"))
+                                    s = "6";
+                                else if (str.equals("64"))
+                                    s = "7";
+                                else if (str.equals("128"))
+                                    s = "8";
+                                else if (str.equals("256"))
+                                    s = "9";
+                                inputPW.setText(inputPW.getText().toString() + s);
+                                System.out.println(str);
+                            }
+                        }else{
+                            flag = false;
+                        }
                     }
-                },100);
+                },1000);
             }
         };
 

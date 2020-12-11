@@ -29,3 +29,8 @@ JNIEXPORT jint JNICALL Java_com_example_todolist_MainActivity_dot(JNIEnv* env,jo
     fpga_dot(val);
     return 0;
 }
+
+JNIEXPORT jint JNICALL Java_com_example_todolist_CalendarActivity_dot(JNIEnv* env,jobject this, jint val) {
+    fpga_dot(val);
+    return 0;
+}

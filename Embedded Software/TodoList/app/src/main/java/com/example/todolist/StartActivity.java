@@ -13,6 +13,7 @@ public class StartActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start);
+        textLcd("                ","               ");
 
         Handler delayHandler = new Handler();
         delayHandler.postDelayed(new Runnable() {
@@ -22,5 +23,11 @@ public class StartActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         }, 1000);
+    }
+
+    public native int textLcd(String s1, String s2);
+
+    static{
+        System.loadLibrary("native-lib");
     }
 }

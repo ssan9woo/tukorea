@@ -4,46 +4,46 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#B5D6E4"
     tools:context=".MainActivity">
 
     <com.prolificinteractive.materialcalendarview.MaterialCalendarView
         android:id="@+id/calendarView"
-        android:layout_width="285dp"
-        android:layout_height="286dp"
+        android:layout_width="426dp"
+        android:layout_height="349dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.089"
+        app:layout_constraintHorizontal_bias="0.198"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.112"
+        app:layout_constraintVertical_bias="0.482"
         app:mcv_selectionColor="#a9dbf0cb"
-        app:mcv_showOtherDates="none">
-
-        <TextView
-            android:id="@+id/textView6"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="TextView" />
-    </com.prolificinteractive.materialcalendarview.MaterialCalendarView>
+        app:mcv_showOtherDates="none" />
 
     <TextView
         android:id="@+id/today"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="72dp"
+        android:layout_marginTop="65dp"
         android:text="Today : 12월 10일"
+        android:textColor="#040404"
         android:textSize="30sp"
-        tools:layout_editor_absoluteX="157dp"
-        tools:layout_editor_absoluteY="506dp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toEndOf="@+id/calendarView"
+        app:layout_constraintTop_toTopOf="parent"
         tools:ignore="MissingConstraints" />
 
     <TextView
         android:id="@+id/todayList"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
         android:text="1. 안녕하세요 \n2. 메롱"
         android:textSize="30sp"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="401dp"
-        tools:layout_editor_absoluteY="122dp" />
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@+id/today"
+        app:layout_constraintTop_toBottomOf="@+id/today"
+        tools:ignore="MissingConstraints" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

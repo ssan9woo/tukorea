@@ -4,19 +4,21 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#B5D6E4"
     tools:context=".StartActivity">
 
     <TextView
         android:id="@+id/textView"
-        android:layout_width="282dp"
-        android:layout_height="88dp"
+        android:layout_width="461dp"
+        android:layout_height="144dp"
         android:gravity="center"
         android:text="TodoList"
-        android:textSize="50dp"
+        android:textColor="#000000"
+        android:textSize="80sp"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.374" />
+        app:layout_constraintVertical_bias="0.269" />
 </androidx.constraintlayout.widget.ConstraintLayout>
