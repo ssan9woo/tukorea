@@ -24,11 +24,13 @@
 
         <TextView
             android:id="@+id/todo"
-            android:layout_width="260dp"
+            android:layout_width="750dp"
             android:layout_height="match_parent"
             android:layout_marginLeft="20dp"
             android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp" />
+            android:layout_marginBottom="10dp"
+            android:gravity="center|left"
+            android:hint="Todo를 입력해주세요" />
 
         <ImageButton
             android:id="@+id/delTodo"
